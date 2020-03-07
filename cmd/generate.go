@@ -31,6 +31,9 @@ var generateCmd = &cobra.Command{
 Generate password according to configuration
 parameters in .quokka config file or default parameters
 if config file does not exist.`,
+	Example: `
+quokka generate password
+`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
 			fmt.Println("Please clarify what you want to generate. Possible args: password")
@@ -44,8 +47,6 @@ if config file does not exist.`,
 		thingToGenerate := args[0]
 		switch thingToGenerate {
 		case "password":
-			// Generate a password that is 64 characters long with 10 digits, 10 symbols,
-			// allowing upper and lower case letters, disallowing repeat characters.
 			res, err := password.Generate(12, 5, 5, false, false)
 			if err != nil {
 				log.Fatal(err)
