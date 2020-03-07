@@ -17,7 +17,9 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/sethvargo/go-password/password"
 	"github.com/spf13/cobra"
 )
 
@@ -26,10 +28,33 @@ var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate random password",
 	Long: `
-Generate strong password according to configuration
-parameters in .quokka config file.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("generate called")
+Generate password according to configuration
+parameters in .quokka config file or default parameters
+if config file does not exist.`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			fmt.Println("Please clarify what you want to generate. Possible args: password")
+			return nil
+		}
+
+		if len(args) != 1 {
+			fmt.Errorf("You can only generate one thing at the same time.")
+		}
+
+		thingToGenerate := args[0]
+		switch thingToGenerate {
+		case "password":
+			// Generate a password that is 64 characters long with 10 digits, 10 symbols,
+			// allowing upper and lower case letters, disallowing repeat characters.
+			res, err := password.Generate(12, 5, 5, false, false)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println("Random password: ", res)
+		default:
+			return fmt.Errorf("%s generation not implemented yet. Feel free to open an issue asking for this feature.", thingToGenerate)
+		}
+		return nil
 	},
 }
 
