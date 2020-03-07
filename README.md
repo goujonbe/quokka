@@ -1,2 +1,3 @@
 # quokka
-Open-source password manager
+
+The first open-source manager for developers.
