@@ -31,19 +31,10 @@ var generateCmd = &cobra.Command{
 Generate password according to configuration
 parameters in .quokka config file or default parameters
 if config file does not exist.`,
-	Example: `
-quokka generate password
-`,
+	Example:   "quokka generate password",
+	ValidArgs: []string{"password"},
+	Args:      cobra.ExactValidArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) == 0 {
-			fmt.Println("Please clarify what you want to generate. Possible args: password")
-			return nil
-		}
-
-		if len(args) != 1 {
-			fmt.Errorf("You can only generate one thing at the same time.")
-		}
-
 		thingToGenerate := args[0]
 		switch thingToGenerate {
 		case "password":
