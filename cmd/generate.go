@@ -1,5 +1,5 @@
 /*
-Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+Copyright © 2020 Benoit Goujon
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,7 +38,11 @@ if config file does not exist.`,
 		thingToGenerate := args[0]
 		switch thingToGenerate {
 		case "password":
-			res, err := password.Generate(12, 5, 5, false, false)
+			length, err := cmd.Flags().GetInt("length")
+			if err != nil {
+				return fmt.Errorf("Could not parse password length: %v", err)
+			}
+			res, err := password.Generate(length, 5, 5, false, false)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -62,4 +66,5 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	generateCmd.Flags().IntP("length", "l", 12, "Password length")
 }
