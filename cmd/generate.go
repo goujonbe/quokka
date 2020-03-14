@@ -21,6 +21,7 @@ import (
 
 	"github.com/sethvargo/go-password/password"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // generateCmd represents the generate command
@@ -38,10 +39,19 @@ if config file does not exist.`,
 		thingToGenerate := args[0]
 		switch thingToGenerate {
 		case "password":
-			length, err := cmd.Flags().GetInt("length")
-			if err != nil {
-				return fmt.Errorf("Could not parse password length: %v", err)
+			var length int
+			if viper.IsSet("password.length") && !cmd.Flags().Changed("length") {
+				fmt.Println("Using password length in config file.")
+				length = viper.GetInt("password.length")
+			} else if cmd.Flags().Changed("length") || !viper.IsSet("password.length") {
+				// get flag value or default one
+				lengthInFlag, err := cmd.Flags().GetInt("length")
+				length = lengthInFlag
+				if err != nil {
+					return fmt.Errorf("Could not parse password length: %v", err)
+				}
 			}
+
 			res, err := password.Generate(length, 5, 5, false, false)
 			if err != nil {
 				log.Fatal(err)
