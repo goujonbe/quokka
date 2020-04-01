@@ -31,7 +31,12 @@ var getCmd = &cobra.Command{
 		configParameterWanted := args[0]
 		switch configParameterWanted {
 		case "password-length":
-			fmt.Println("password length: ", viper.GetInt("password.length"))
+			length := viper.GetInt("password.length")
+			if length != 0 {
+				fmt.Println("password length: ", length)
+			} else {
+				fmt.Println("Password length not found. Either config file does not exist or password length is not set.")
+			}
 		}
 	},
 }
