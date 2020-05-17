@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/sethvargo/go-password/password"
+	password "github.com/goujonbe/quokka/password"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -52,7 +52,7 @@ if config file does not exist.`,
 				}
 			}
 
-			res, err := password.Generate(length, 5, 5, false, false)
+			res, err := password.Generate(length, true, true, true, true)
 			if err != nil {
 				log.Fatal(err)
 			}
