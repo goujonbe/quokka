@@ -46,7 +46,7 @@ func buildCharacterSet(includeLowerLetters, includeUpperLetters, includeDigits, 
 func getRandomElement(characterSet string) (string, error) {
 	randomNumber, err := rand.Int(rand.Reader, big.NewInt(int64(len(characterSet))))
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	return string(characterSet[randomNumber.Int64()]), nil
 }
