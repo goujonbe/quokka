@@ -3,6 +3,7 @@ package password
 import (
 	"crypto/rand"
 	"math/big"
+	"strings"
 )
 
 const (
@@ -25,20 +26,21 @@ func Generate(length int, includeLowerLetters, includeUpperLetters, includeDigit
 	return password, nil
 }
 
-func buildCharacterSet(includeLowerLetters, includeUpperLetters, includeDigits, includeSymbols bool) (characterSet string) {
+func buildCharacterSet(includeLowerLetters, includeUpperLetters, includeDigits, includeSymbols bool) string {
+	var characterSetBuilder strings.Builder
 	if includeLowerLetters {
-		characterSet += LowerLetters
+		characterSetBuilder.WriteString(LowerLetters)
 	}
 	if includeUpperLetters {
-		characterSet += UpperLetters
+		characterSetBuilder.WriteString(UpperLetters)
 	}
 	if includeDigits {
-		characterSet += Digits
+		characterSetBuilder.WriteString(Digits)
 	}
 	if includeSymbols {
-		characterSet += Symbols
+		characterSetBuilder.WriteString(Symbols)
 	}
-	return
+	return characterSetBuilder.String()
 }
 
 func getRandomElement(characterSet string) (string, error) {
