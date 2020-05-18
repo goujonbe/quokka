@@ -2,6 +2,7 @@ package password
 
 import (
 	"crypto/rand"
+	"errors"
 	"math/big"
 	"strings"
 )
@@ -12,6 +13,8 @@ const (
 	Digits       = "0123456789"
 	Symbols      = "~!@#$%^&*()_+`-={}|[]\\:\"<>?,./"
 )
+
+var ErrorEmptyCharacterSet = errors.New("Cannot select a character from an empty set.")
 
 func Generate(length int, includeLowerLetters, includeUpperLetters, includeDigits, includeSymbols bool) (string, error) {
 	var password string
@@ -44,6 +47,9 @@ func buildCharacterSet(includeLowerLetters, includeUpperLetters, includeDigits, 
 }
 
 func getRandomElement(characterSet string) (string, error) {
+	if len(characterSet) == 0 {
+		return "", ErrorEmptyCharacterSet
+	}
 	randomNumber, err := rand.Int(rand.Reader, big.NewInt(int64(len(characterSet))))
 	if err != nil {
 		return "", err
