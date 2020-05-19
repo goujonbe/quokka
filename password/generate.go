@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type PasswordGenerator interface {
+	Generate(int, bool, bool, bool, bool) (string, error)
+}
+
 const (
 	LowerLetters = "abcdefghijklmnopqrstuvwxyz"
 	UpperLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
