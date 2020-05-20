@@ -22,4 +22,13 @@ jobs:
         run: go mod download
 
       - name: Run tests
-        run: go test ./...
+        run: go test ./... -coverprofile coverage.xml
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-quokka
+          fail_ci_if_error: true
